@@ -1,0 +1,143 @@
+# FT UGM Google Calendar
+
+PHP client library for the Faculty of Engineering UGM calendar service.
+
+## Requirements
+
+* PHP >= 7.4
+* Composer
+
+## Installation
+
+Install via Composer:
+
+```bash
+composer require ft-ugm/google-calendar
+```
+
+## Usage
+
+Create a `GoogleCalendar` instance with the Calendar API URL and API token:
+
+```php
+use FtUgm\GoogleCalendar\GoogleCalendar;
+
+$calendar = new GoogleCalendar([
+	'base_url' => 'https://calendar-api.ft.ugm.ac.id',
+	'token' => 'GOOGLE_CALENDAR_API_TOKEN',
+]);
+```
+
+### Create Event
+
+```php
+use FtUgm\GoogleCalendar\Event;
+
+$event = new Event([
+	'summary' => 'IT Team Discussion',
+	'description' => 'Discussion about the development of the correspondence service.',
+	'start' => [
+		'dateTime' => '2026-09-15T10:00:00+07:00',
+		'timeZone' => 'Asia/Jakarta',
+	],
+	'end' => [
+		'dateTime' => '2026-09-15T11:00:00+07:00',
+		'timeZone' => 'Asia/Jakarta',
+	],
+	'location' => 'IT Room',
+	'attendees' => [
+		[
+			'email' => 'echo@gmail.com',
+		],
+	],
+]);
+
+$event = $calendar->createEvent($event);
+
+echo $event->getId();
+echo $event->getHtmlLink();
+```
+
+### Get Event
+
+```php
+$event = $calendar->getEvent($eventId);
+
+echo $event->getSummary();
+echo $event->getHtmlLink();
+```
+
+### Update Event
+
+Replaces the event data with the provided representation.
+
+```php
+$event = new Event([
+	'summary' => 'IT Team Discussion - Revised',
+	'description' => 'Discussion about the development of the e-office service.',
+	'start' => [
+		'dateTime' => '2026-09-16T13:00:00+07:00',
+		'timeZone' => 'Asia/Jakarta',
+	],
+	'end' => [
+		'dateTime' => '2026-09-16T14:00:00+07:00',
+		'timeZone' => 'Asia/Jakarta',
+	],
+	'attendees' => [
+		[
+			'email' => 'echo@gmail.com',
+		],
+		[
+			'email' => 'nova@gmail.com',
+		],
+		[
+			'email' => 'nr@gmail.com',
+		],
+	],
+]);
+
+$event = $calendar->updateEvent($eventId, $event);
+```
+
+### Patch Event
+
+Updates only the fields provided.
+
+```php
+$event = new Event([
+	'summary' => 'Final Title (For Real This Time)',
+]);
+
+$event = $calendar->patchEvent($eventId, $event);
+```
+
+### Delete Event
+
+```php
+$calendar->deleteEvent($eventId);
+```
+
+## Error Handling
+
+API and connection errors throw a `GoogleCalendarException`.
+
+```php
+use FtUgm\GoogleCalendar\GoogleCalendarException;
+
+try {
+	$event = $calendar->getEvent($eventId);
+} catch (GoogleCalendarException $e) {
+	echo $e->getMessage();
+	echo $e->getCode();
+}
+```
+
+The exception provides the API response through `getResponse()` when available:
+
+```php
+$response = $e->getResponse();
+```
+
+## License
+
+MIT

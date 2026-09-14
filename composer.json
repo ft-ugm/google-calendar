@@ -1,0 +1,20 @@
+{
+    "name": "ft-ugm/google-calendar",
+    "description": "PHP client library for the Faculty of Engineering UGM calendar service.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nur Muhammad",
+            "homepage": "https://ngekoding.github.io/"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "FtUgm\\GoogleCalendar\\": "src/"
+        }
+    }
+}
