@@ -58,6 +58,23 @@ echo $event->getId();
 echo $event->getHtmlLink();
 ```
 
+The `start` and `end` values can also be provided using `DateTime`:
+
+```php
+'start' => new \DateTime(
+	'2026-09-15 10:00:00',
+	new \DateTimeZone('Asia/Jakarta')
+),
+'end' => new \DateTime(
+	'2026-09-15 11:00:00',
+	new \DateTimeZone('Asia/Jakarta')
+),
+```
+
+When using `DateTime`, the timezone is automatically taken from the `DateTime` instance.
+
+When using the array format, the `dateTime` value should follow the RFC 3339 format. The `timeZone` field is optional. When omitted, the Calendar API uses `Asia/Jakarta` as the default timezone.
+
 ### Get Event
 
 ```php

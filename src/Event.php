@@ -36,12 +36,24 @@ class Event
 			'id' => $this->id,
 			'summary' => $this->summary,
 			'description' => $this->description,
-			'start' => $this->start,
-			'end' => $this->end,
+			'start' => $this->formatDateTime($this->start),
+			'end' => $this->formatDateTime($this->end),
 			'location' => $this->location,
 			'attendees' => $this->attendees,
 			'htmlLink' => $this->htmlLink,
 		];
+	}
+
+	protected function formatDateTime($value)
+	{
+		if ($value instanceof \DateTimeInterface) {
+			return [
+				'dateTime' => $value->format(\DateTimeInterface::RFC3339),
+				'timeZone' => $value->getTimezone()->getName(),
+			];
+		}
+
+		return $value;
 	}
 
 	public function getId()
@@ -85,7 +97,7 @@ class Event
 		return $this->start;
 	}
 
-	public function setStart(array $start)
+	public function setStart($start)
 	{
 		$this->start = $start;
 
@@ -97,7 +109,7 @@ class Event
 		return $this->end;
 	}
 
-	public function setEnd(array $end)
+	public function setEnd($end)
 	{
 		$this->end = $end;
 
