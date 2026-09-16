@@ -75,6 +75,50 @@ When using `DateTime`, the timezone is automatically taken from the `DateTime` i
 
 When using the array format, the `dateTime` value should follow the RFC 3339 format. The `timeZone` field is optional. When omitted, the Calendar API uses `Asia/Jakarta` as the default timezone.
 
+The `start` and `end` values support both **timed events** and **all-day events**:
+
+| Event type    | `start` / `end` format | Description                                  |
+| ------------- | ---------------------- | -------------------------------------------- |
+| Timed event   | `dateTime`             | An event with a specific start and end time. |
+| All-day event | `date`                 | An event that covers one or more whole days. |
+
+For a timed event, use `dateTime`:
+
+```php
+'start' => [
+	'dateTime' => '2026-09-15T10:00:00+07:00',
+],
+'end' => [
+	'dateTime' => '2026-09-15T11:00:00+07:00',
+],
+```
+
+For an all-day event, use `date`:
+
+```php
+'start' => [
+	'date' => '2026-09-15',
+],
+'end' => [
+	'date' => '2026-09-16',
+],
+```
+
+For all-day events, the `end` date is **exclusive**. This means the `end` date is the day after the last day of the event.
+
+For example:
+
+| Event             | `start.date` | `end.date`   |
+| ----------------- | ------------ | ------------ |
+| September 15 only | `2026-09-15` | `2026-09-16` |
+| September 15–16   | `2026-09-15` | `2026-09-17` |
+| September 15–17   | `2026-09-15` | `2026-09-18` |
+
+In other words, `start.date` is the first day of the event, while `end.date` is the **exclusive end date** and is not included in the event.
+
+> [!IMPORTANT]
+> Each `start` and `end` value must contain either `date` or `dateTime`, but not both.
+
 ### Get Event
 
 ```php
